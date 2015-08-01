@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ public class Tokenizer {
     {
         this.input = input;
     }
-    void start()
+    List<String> start()
     {
         stopwordslist=new ArrayList<String>();
         String[] result= input.split("\\s+");
@@ -56,5 +57,6 @@ public class Tokenizer {
             System.out.println(temp);
         }
 
+    return finaltext;
     }
 }
