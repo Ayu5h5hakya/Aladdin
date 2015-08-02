@@ -59,7 +59,7 @@ public class Tokenizer {
 
         }
         catch (FileNotFoundException e) {}
-        catch (IOException e) {}
+        catch (IOException e) {System.out.println("Something happened");}
         int counter=0;
         while(counter<finaltext.size())
         {
