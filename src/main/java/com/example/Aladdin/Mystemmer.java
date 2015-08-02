@@ -1,4 +1,4 @@
-package com.example;
+package com.example.Aladdin;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +35,7 @@ public class Mystemmer {
 
     private boolean stopwordsloader()
     {
-        file = new File("C:\\Users\\Ayush\\Documents\\stopwords.txt");
+        file = new File("stopwords.txt");
         if(file == null) return false;
         else return true;
     }

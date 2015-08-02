@@ -1,4 +1,4 @@
-package com.example;
+package com.example.Aladdin;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,8 +10,15 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MyClass {
-    public static void main(String[] args){
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
         String test=null;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the sentence");
@@ -37,6 +44,6 @@ public class MyClass {
             System.out.print(temp + " ");
         }
         System.out.println();
-
+ 
     }
 }
