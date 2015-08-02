@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  * Created by Ayush on 7/15/2015.
  */
 public class Tokenizer {
+
     private String input;
     ArrayList<String> stopwordslist, finaltext;
     String[] stopwords;
@@ -21,7 +22,8 @@ public class Tokenizer {
     {
         this.input = input;
     }
-    List<String> start()
+
+  ArrayList<String> start()
     {
         stopwordslist=new ArrayList<String>();
         String[] result= input.split("\\s+");
@@ -52,11 +54,8 @@ public class Tokenizer {
             }
             else  counter++;
         }
-        for(String temp:finaltext)
-        {
-            System.out.println(temp);
-        }
-
+   
     return finaltext;
+ 
     }
 }

@@ -1,5 +1,8 @@
+com/example/Aladdin/DataSet.class
+com/example/Aladdin/Mystemmer.class
+com/example/Aladdin/Porter.class
+com/example/Aladdin/NaiveBayes.class
 com/example/Aladdin/Tokenizer.class
 com/example/Aladdin/NewString.class
-com/example/Aladdin/Mystemmer.class
+com/example/Aladdin/ReadFile.class
 com/example/Aladdin/App.class
-com/example/Aladdin/Porter.class
