@@ -5,12 +5,13 @@ import java.util.*;
 
 class NaiveBayes
 {
-  private ReadFile readFile=new ReadFile();
 
-  
- public  String positiveData;
- public String negativeData;
- public String neutralData;
+ private ReadFile readFile=new ReadFile();
+ private SentenceProcessing sentenceProcessing = new SentenceProcessing();
+
+ private  String positiveData;
+ private String negativeData;
+ private String neutralData;
 
 public NaiveBayes()
   {
@@ -19,24 +20,12 @@ public NaiveBayes()
       String positiveData = readFile.readFile("PositiveNews.txt");
       String negativeData = readFile.readFile("NegativeNews.txt");
       String neutralData = readFile.readFile("NeutralNews.txt");
-
-        Tokenizer tokenizer = new Tokenizer(positiveData);
-   
-        ArrayList<String> tokenizedtext = (ArrayList<String>) tokenizer.start();
-
-        System.out.println("Tokenizer output:");
-
-        for(String temp : tokenizedtext)
-        {
-            System.out.print(temp + " ");
-        }
- 
-/*
-      //get vocabulary set
-      DataSet positiveDataSet = new DataSet(positiveData);
-      DataSet negativeDataSet = new DataSet(negativeData);
-      DataSet neutralDataSet = new DataSet(neutralData);
-*/
+  
+     //Find vocabulary 
+       DataSet positiveDataSet = new DataSet(sentenceProcessing.sentenceProcessor(positiveData));
+       DataSet negativeDataSet = new DataSet(sentenceProcessing.sentenceProcessor(negativeData));
+       DataSet neutralDataSet = new DataSet(sentenceProcessing.sentenceProcessor(neutralData));
+  
   }
 
 }

@@ -18,10 +18,12 @@ public class App
 
         NaiveBayes naiveBayes= new NaiveBayes();
 
+
         String test=null;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the sentence");
         test=scanner.nextLine();
+
 
         Tokenizer tokenizer = new Tokenizer(test);
         ArrayList<String> tokenizedtext = (ArrayList<String>) tokenizer.start();
