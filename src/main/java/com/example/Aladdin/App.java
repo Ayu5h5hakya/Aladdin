@@ -18,34 +18,16 @@ public class App
 
         NaiveBayes naiveBayes= new NaiveBayes();
 
+        SentenceProcessing sentenceProcessing = new SentenceProcessing();
 
         String test=null;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter the sentence");
+
         test=scanner.nextLine();
-
-
-        Tokenizer tokenizer = new Tokenizer(test);
-        ArrayList<String> tokenizedtext = (ArrayList<String>) tokenizer.start();
-
-        System.out.println("Tokenizer output:");
-
-        for(String temp : tokenizedtext)
-        {
-            System.out.print(temp + " ");
-        }
-        System.out.println();
-        System.out.println();
-
-        Porter porter = new Porter();
-        ArrayList<String> final_op = porter.start(tokenizedtext);
-
-        System.out.println("Stemmer output:");
-        for(String temp : final_op)
-        {
-            System.out.print(temp + " ");
-        }
-        System.out.println();
- 
+        test += '\n'; 
+        
+        DataSet neutralDataSet = new DataSet(sentenceProcessing.sentenceProcessor(test));
+        naiveBayes.getOutput(neutralDataSet);
     }
 }

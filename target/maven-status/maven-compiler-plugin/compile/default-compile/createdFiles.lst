@@ -1,6 +1,7 @@
 com/example/Aladdin/SentenceProcessing.class
 com/example/Aladdin/DataSet.class
 com/example/Aladdin/Mystemmer.class
+com/example/Aladdin/Probability.class
 com/example/Aladdin/Porter.class
 com/example/Aladdin/NaiveBayes.class
 com/example/Aladdin/Tokenizer.class
