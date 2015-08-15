@@ -137,12 +137,6 @@ private float probOfNeutral;
               float p2 = probOfNegative;
               float p3 = probOfNeutral;
 
-             System.out.println(p1);
-             System.out.println(p2);
-             System.out.println(p3);
-
-
-
             Set<Map.Entry<String, Integer>> set = testVocabulary.entrySet();
 
 
