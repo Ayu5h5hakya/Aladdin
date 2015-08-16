@@ -32,9 +32,9 @@ public NaiveBayes()
                
   }
 
- public void getOutput(DataSet testDataSet)
+ public String getOutput(DataSet testDataSet)
  {
-      probability.getResult(testDataSet);
+     return  probability.getResult(testDataSet);
  
  }
 

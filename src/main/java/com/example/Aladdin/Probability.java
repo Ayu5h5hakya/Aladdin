@@ -126,8 +126,10 @@ private float probOfNeutral;
               calculateProblility(neutralVocabulary, neutralWordProbability, totalNeutralVocabulary);
         }
 
-        public void getResult(DataSet testDataSet)
+        public String getResult(DataSet testDataSet)
         {
+ 
+            String result;
 
             HashMap<String, Integer> testVocabulary = new HashMap<String, Integer>();
            
@@ -161,14 +163,15 @@ private float probOfNeutral;
               }
 
              if(p1>p2 && p1>p3)
-                     System.out.println("Positive");
+                   result = "Positive";
         
              else if(p2>p3)
-                    System.out.println("Negative");
+                   result = "Negative";
          
              else
-                     System.out.println("Neutral");
+                    result = "Neutral";
 
+             return result;
         }
  
 }
