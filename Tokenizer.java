@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Ayush on 7/15/2015.
  */
 public class Tokenizer {
     private String input;
-    private boolean[] tokens;
     ArrayList<String> stopwordslist, finaltext;
     String[] stopwords;
     Tokenizer(String input)
@@ -42,7 +43,7 @@ public class Tokenizer {
 
         for(int i=0;i<result.length;++i)
         {
-            result[i]=result[i].replaceAll("[^a-zA-Z]","");
+            result[i]=result[i].replaceAll("[^a-zA-Z]","").toLowerCase();
         }
         finaltext=new ArrayList<String>(Arrays.asList(result));
 
@@ -58,7 +59,7 @@ public class Tokenizer {
 
         }
         catch (FileNotFoundException e) {}
-        catch (IOException e) {}
+        catch (IOException e) {System.out.println("Something happened");}
         int counter=0;
         while(counter<finaltext.size())
         {
@@ -67,24 +68,10 @@ public class Tokenizer {
 
                 finaltext.remove(counter);
             }
-            else
-            {
-                counter++;
-            }
+            else  counter++;
         }
-    tokens =new boolean[finaltext.size()];
-    for(int i =0;i<finaltext.size();++i)
-    {
-        if(Character.isUpperCase(finaltext.get(i).charAt(0)))
-        {
-            tokens[i]= false;
-        }
-        else tokens[i] = true;
-    }
 
 
     return finaltext;
     }
-
-    public boolean[] getTokens(){return  tokens;}
 }
