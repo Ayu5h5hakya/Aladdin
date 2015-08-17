@@ -1,4 +1,4 @@
-package com.example;
+package com.example.Aladdin;
 
 import java.util.ArrayList;
 
