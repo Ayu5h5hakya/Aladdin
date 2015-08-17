@@ -226,7 +226,7 @@ public class App
  public static void main( String[] args )
     {
          Message messgae = new Message();
-         new UI(messgae);
          new Background(messgae);
+         new UI(messgae);
     }
 }
