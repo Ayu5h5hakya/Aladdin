@@ -1,7 +1,6 @@
-package com.example.Aladdin;
+package com.example;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Ayush on 7/19/2015.
@@ -13,6 +12,7 @@ class NewString {
         str = "";
     }
 }
+
 public class Porter {
 
 
@@ -143,13 +143,12 @@ public class Porter {
         return false;
     }
 
-    private String step1(String str)
-    {
-
+    private String step1(String str) {
 
         NewString stem = new NewString();
 
-        if (str.charAt(str.length() - 1) == 's') {
+        if (str.charAt(str.length() - 1) == 's')
+        {
             if ((hasSuffix(str, "sses", stem)) || (hasSuffix(str, "ies", stem))) {
                 String tmp = "";
                 for (int i = 0; i < str.length() - 2; i++) tmp += str.charAt(i);
@@ -168,15 +167,19 @@ public class Porter {
             }
         }
 
-        if (hasSuffix(str, "eed", stem)) {
+        if (hasSuffix(str, "eed", stem))
+        {
             if (measure(stem.str) > 0) {
                 String tmp = "";
                 for (int i = 0; i < str.length() - 1; i++)
                     tmp += str.charAt(i);
                 str = tmp;
             }
-        } else {
-            if ((hasSuffix(str, "ed", stem)) || (hasSuffix(str, "ing", stem))) {
+        }
+        else
+        {
+            if ((hasSuffix(str, "ed", stem)) || (hasSuffix(str, "ing", stem)))
+            {
                 if (containsVowel(stem.str)) {
 
                     String tmp = "";
@@ -217,8 +220,7 @@ public class Porter {
         return str;
     }
 
-    private String step2(String step1_op)
-    {
+    private String step2(String step1_op) {
         String[][] suffixes = {{"ational", "ate"},
                 {"tional", "tion"},
                 {"enci", "ence"},
@@ -256,8 +258,7 @@ public class Porter {
         return step1_op;
     }
 
-    private String step3(String step2_op)
-    {
+    private String step3(String step2_op) {
         String[][] suffixes = {{"icate", "ic"},
                 {"ative", ""},
                 {"alize", "al"},
@@ -278,8 +279,7 @@ public class Porter {
         return step2_op;
     }
 
-    private String step4(String step3_op)
-    {
+    private String step4(String step3_op) {
         String[] suffixes = {"al", "ance", "ence", "er", "ic", "able", "ible", "ant", "ement", "ment", "ent", "sion", "tion",
                 "ou", "ism", "ate", "iti", "ous", "ive", "ize", "ise"};
 
@@ -297,8 +297,7 @@ public class Porter {
         return step3_op;
     }
 
-    private String step5(String step4_op)
-    {
+    private String step5(String step4_op) {
         if (step4_op.charAt(step4_op.length() - 1) == 'e') {
             if (measure(step4_op) > 1) {/* measure(str)==measure(stem) if ends in vowel */
                 String tmp = "";
@@ -327,23 +326,22 @@ public class Porter {
         return step4_op;
     }
 
-    public ArrayList<String> start(ArrayList<String> tokenizedtext)
-    {
-        String tempstring=null;
-        for(int i=0;i<tokenizedtext.size();++i)
-        {
-            tempstring=tokenizedtext.get(i);
+    public ArrayList<String> start(ArrayList<String> tokenizedtext,boolean[] tokens) {
+        String tempstring = null;
+        for (int i = 0; i < tokenizedtext.size(); ++i) {
+            tempstring = tokenizedtext.get(i);
+            if(tokens[i] == false) continue;
             tempstring = step1(tempstring);
-            if(tempstring.length()>=1 )
+            if (tempstring.length() >= 1)
                 tempstring = step2(tempstring);
-            if(tempstring.length()>=1 )
+            if (tempstring.length() >= 1)
                 tempstring = step3(tempstring);
-            if(tempstring.length()>=1 )
+            if (tempstring.length() >= 1)
                 tempstring = step4(tempstring);
-            if(tempstring.length()>=1 )
+            if (tempstring.length() >= 1)
                 tempstring = step5(tempstring);
 
-            tokenizedtext.set(i,tempstring);
+            tokenizedtext.set(i, tempstring);
         }
 
         return tokenizedtext;
