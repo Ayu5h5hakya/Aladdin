@@ -5,6 +5,11 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import twitter4j.*;
+import java.text.SimpleDateFormat;
+import java.util.regex.*;
+import twitter4j.conf.*;
+import java.lang.*;
 
 class Message
 {
@@ -224,9 +229,13 @@ class Background implements Runnable
 public class App 
 {
  public static void main( String[] args )
-    {
-         Message messgae = new Message();
-         new Background(messgae);
-         new UI(messgae);
+    { 
+                TwitterExtract extract = new TwitterExtract();
+                extract.getDate();
+                extract.extractStatus();
+ 
+//         Message messgae = new Message();
+ //        new Background(messgae);
+  //       new UI(messgae);
     }
 }

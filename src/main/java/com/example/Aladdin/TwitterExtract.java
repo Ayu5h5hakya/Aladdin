@@ -13,7 +13,7 @@ class TwitterExtract{
         private String date;
         
 
-        private void getDate(){
+        public void getDate(){
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.DAY_OF_MONTH,-100);
                 SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -36,7 +36,7 @@ class TwitterExtract{
         }
 
         
-        private void extractStatus(){
+        public void extractStatus(){
                 try{ 
                         try{
                                 String token_access="2784327338-kvhDBvfDZs5lNueguNfT8RRujaSJaa9ZGOoyoYZ";
@@ -130,11 +130,5 @@ class TwitterExtract{
                 Matcher m = p.matcher(source);
                 return m.find();
         }
-        public static void main(String[] args){
-                TwitterExtract extract = new TwitterExtract();
-                extract.getDate();
-                extract.extractStatus();
         
-        }
-
 }
