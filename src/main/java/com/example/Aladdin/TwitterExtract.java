@@ -43,7 +43,7 @@ class TwitterExtract{
                                 String token_secret="8orAqubKXLtKqVcDTVwcCrFrc6bVAhV83TNxuj6iVgYhH";
                                 String consumer_secret="WhQ4Fs2f5s3nvKAxYOfv5MYIeBi8D66ogPp1eaHBM66ZS9ZB34";
                                 String consumer_key="yR0EfSogckPm4VUvdZ7vMcIVP";
-                                this.fout = new FileOutputStream("Twitter.txt");
+                                this.fout = new FileOutputStream("../../src/resources/Twitter.txt");
                                 ConfigurationBuilder cb=new ConfigurationBuilder();
                                 cb.setDebugEnabled(true)
                                         .setOAuthConsumerKey(consumer_key)
@@ -86,7 +86,8 @@ class TwitterExtract{
                                                                 if(validStatus && (status3.getLang().matches("en")))
                                                                 {
                                                                 System.out.println(status3.getText());//get the status in timeline
-                                                                fout.write(new String("->"+status3.getText()+"\n").replaceAll("(((https?|ftp|gopher|telnet|file):((//)|(\\\\))|(www.))+[A-Za-z\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)","").replaceAll("#[^\\s]+","").replaceAll("RT","").replaceAll("@[^\\s]+","").replaceAll(" +"," ").replaceAll("[!|*|\\\\|$|%|^|&|(|)|.|,|>|<|_|\\-|;|:|+|=|~|`|#|@|{|}|\\[|\\]]*","").trim().getBytes());
+                                                                fout.write(new String("->"+status3.getText()+"\n").replaceAll("(((https?|ftp|gopher|telnet|file):((//)|(\\\\))|(www.))+[A-Za-z\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)","").replaceAll("#[^\\s]+","").replaceAll("RT","").replaceAll("http[^\\s]+","").replaceAll("\\...","").replaceAll("\\r\\n|\\r|\\n"," ").replaceAll("@[^\\s]+","").replaceAll(" +"," ").replaceAll("[!|*|\\\\|$|%|^|&|(|)|.|,|>|<|_|\\-|;|:|+|=|~|`|#|@|{|}|\\[|\\]]*","").trim().getBytes());
+                                                                fout.write(new String("\n").getBytes());
                                                                 }
                                                 }
                                         }
