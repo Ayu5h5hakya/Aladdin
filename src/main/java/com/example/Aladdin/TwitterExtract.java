@@ -19,10 +19,11 @@ class TwitterExtract{
                 SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
                 date = format1.format(cal.getTime());
         }
-        private String[] inputTokenizer(){
+        private String[] inputTokenizer(String input){
                 String searchkeyword;
-                Scanner in = new Scanner(System.in);
-                searchkeyword = in.nextLine();
+               
+                searchkeyword = input;
+
                 int i=0;
                 String normalTokens[] = searchkeyword.split(" "); String[] hashTokens = new String[normalTokens.length];
                 for(String token : normalTokens){
@@ -36,14 +37,15 @@ class TwitterExtract{
         }
 
         
-        public void extractStatus(){
+        public void extractStatus(String input){
                 try{ 
                         try{
+                                System.out.println(input);
                                 String token_access="2784327338-kvhDBvfDZs5lNueguNfT8RRujaSJaa9ZGOoyoYZ";
                                 String token_secret="8orAqubKXLtKqVcDTVwcCrFrc6bVAhV83TNxuj6iVgYhH";
                                 String consumer_secret="WhQ4Fs2f5s3nvKAxYOfv5MYIeBi8D66ogPp1eaHBM66ZS9ZB34";
                                 String consumer_key="yR0EfSogckPm4VUvdZ7vMcIVP";
-                                this.fout = new FileOutputStream("Twitter.txt");
+                                this.fout = new FileOutputStream("../../src/resources/Twitter.txt");
                                 ConfigurationBuilder cb=new ConfigurationBuilder();
                                 cb.setDebugEnabled(true)
                                         .setOAuthConsumerKey(consumer_key)
@@ -53,29 +55,19 @@ class TwitterExtract{
                                 TwitterFactory tf = new TwitterFactory(cb.build());//access to twitter via our account
                                 Twitter twitter = tf.getInstance();// get an instance of twitter
                                 Paging page = new Paging(1,100); //page number, number per page
-                      //          Query query = new Query("aguero" );
-                      //          query.setSince(date);
-                      //          query.setLang("en");
-                      //          query.count(90);
-                                //          Query queries[]=new Query[tokens.length];// query is used for keyword search and timeline restriction
-                      //          for(int j=0;j<tokens.length;j++)
-                      //          {
-                      //                  queries[j] = new Query(tokens[j]);
-                      //                  queries[j].setSince(date);
-                      //                  queries[j].setLang("en");
-                      //          }
-                      //          QueryResult result;
+                   
                                 String[] searchuser = new String[] {"kathmandupost","BBC","CNN","BBCWorld","nytimes","BBCSport"};  
                                 ResponseList<User> users = twitter.lookupUsers(searchuser);// looks only at the timeline of specifed user
-                                String keywords[] = inputTokenizer();
+
+                                String keywords[] = inputTokenizer(input);
 
                                 for (User user : users)
                                 {
-                                        System.out.println("Friend's name ; "+user.getName());
+                                       // System.out.println("Friend's name ; "+user.getName());
                                         if(user.getStatus()!=null)
                                         {
-                                                System.out.println("Timeline");
-                                                System.out.println(user.getName());
+                                        //        System.out.println("Timeline");
+                                         //       System.out.println(user.getName());
                                                 List<Status>statusess = twitter.getUserTimeline(user.getId(),page);
                                                 for(Status status3 : statusess)
                                                 {
@@ -85,29 +77,16 @@ class TwitterExtract{
                                                                 }
                                                                 if(validStatus && (status3.getLang().matches("en")))
                                                                 {
-                                                                System.out.println(status3.getText());//get the status in timeline
-                                                                fout.write(new String("->"+status3.getText()+"\n").replaceAll("(((https?|ftp|gopher|telnet|file):((//)|(\\\\))|(www.))+[A-Za-z\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)","").replaceAll("#[^\\s]+","").replaceAll("RT","").replaceAll("@[^\\s]+","").replaceAll(" +"," ").replaceAll("[!|*|\\\\|$|%|^|&|(|)|.|,|>|<|_|\\-|;|:|+|=|~|`|#|@|{|}|\\[|\\]]*","").trim().getBytes());
+                                          //                      System.out.println(status3.getText());//get the status in timeline
+                                                                fout.write(new String("->"+status3.getText()+"\n").replaceAll("(((https?|ftp|gopher|telnet|file):((//)|(\\\\))|(www.))+[A-Za-z\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)","").replaceAll("#[^\\s]+","").replaceAll("RT","").replaceAll("http[^\\s]+","").replaceAll("\\...","").replaceAll("\\r\\n|\\r|\\n"," ").replaceAll("@[^\\s]+","").replaceAll(" +"," ").replaceAll("[!|*|\\\\|$|%|^|&|(|)|.|,|>|<|_|\\-|;|:|+|=|~|`|#|@|{|}|\\[|\\]]*","").trim().getBytes());
+                                                                fout.write(new String("\n").getBytes());
                                                                 }
                                                 }
                                         }
                                 }
-                                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                                //     do 
-                                //             {
-                                //                     result = twitter.search(query);
-                                //                     List<Status> tweets = result.getTweets();// creates the list of status containing matched query
-                                //                     String[] newschannels = {"kathmandupost","BBC","cnni","nytimes","BBCWorld","cnnbrk","cnnsport","BBCSport","WorldNews24","worldnews_24","CNN"};
-                                //                     for(Status tweet : tweets)
-                                //                     {
-                                //                            if(Arrays.asList(newschannels).contains(tweet.getUser().getScreenName())){ 
-                                //                             System.out.println("@"+tweet.getUser().getScreenName()+"-"+tweet.getText());
-                                //                             fout.write(new String("@"+tweet.getUser().getScreenName()+"--->"+tweet.getText()+"\n").replaceAll("(((https?|ftp|gopher|telnet|file):((//)|(\\\\))|(www.))+[A-Za-z\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)","").replaceAll("#[^\\s]+","").replaceAll("RT","").replaceAll("@[^\\s]+","").replaceAll(" +"," ").replaceAll("[!|*|\\\\|$|%|^|&|(|)|.|,|>|<|_|\\-|+|=|~|`|#|@|{|}|\\[|\\]]*","").trim().getBytes());
-                                //                           }
-                                //                     }
-                                //                     System.out.println(":::::::::::::::::::::::::::::::");
-                                //             }
-                                //     while((query=result.nextQuery())!=null);
-                                System.exit(0);
+                                
+                          //  System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                        
                         }catch (TwitterException te)
                         {
                                 te.printStackTrace();
@@ -122,6 +101,8 @@ class TwitterExtract{
                         e.printStackTrace(); 
                         System.exit(-1); 
                 } 
+
+
         } 
 
         private static boolean matching(String source,String subItem){

@@ -14,9 +14,17 @@ import java.lang.*;
 class Message
 {
 
-  String news, result;
+  String news;
+
+  ArrayList<String> positiveList = new ArrayList<String>();
+  ArrayList<String> neutralList = new ArrayList<String>();
+  ArrayList<String> negativeList = new ArrayList<String>();
+  
+
   boolean valueSetNews = false;
-  boolean valueSetResult= false;
+  boolean valueSetResultPositive = false;
+  boolean valueSetResultNegative = false;
+  boolean valueSetResultNeutral = false;
 
   synchronized void putNews(String news)
   {
@@ -52,9 +60,9 @@ class Message
   }
 
 
-  synchronized void putResult(String result)
+  synchronized void putResult( ArrayList<String> positiveList, ArrayList<String> neutralList, ArrayList<String>negativeList)
   {
-    while(valueSetResult)
+    while(valueSetResultNeutral && valueSetResultPositive && valueSetResultNegative)
       try
       {
          wait();
@@ -64,14 +72,20 @@ class Message
         System.out.println("InterruptedException caught");
       }
 
-      this.result= result;
-      valueSetResult = true;
+      this.positiveList = positiveList;
+      this.negativeList = negativeList;
+      this.neutralList = neutralList;
+      
+      valueSetResultPositive = true;
+      valueSetResultNegative = true;
+      valueSetResultNeutral = true;
+
       notify();
   }
 
-  synchronized String getResult()
+  synchronized ArrayList<String> getPositiveResult()
   {
-     while(!valueSetResult)
+     while(!valueSetResultPositive)
      try{
            wait();
         }
@@ -80,9 +94,45 @@ class Message
         System.out.println("InterruptedException caught");
      }
 
-     valueSetResult= false;
+     valueSetResultPositive= false;
      notify();
-     return result;
+   
+     return positiveList;
+  }
+
+  synchronized ArrayList<String> getNegativeResult()
+  {
+     while(!valueSetResultNegative)
+     try{
+           wait();
+        }
+     catch(InterruptedException e)
+     {
+        System.out.println("InterruptedException caught");
+     }
+
+     valueSetResultNegative= false;
+     notify();
+   
+     return negativeList;
+  }
+
+
+  synchronized ArrayList<String> getNeutralResult()
+  {
+     while(!valueSetResultNeutral)
+     try{
+           wait();
+        }
+     catch(InterruptedException e)
+     {
+        System.out.println("InterruptedException caught");
+     }
+
+     valueSetResultNeutral = false;
+     notify();
+   
+     return neutralList;
   }
 
 }
@@ -90,10 +140,15 @@ class Message
 class UI implements Runnable
 {
 
+ TwitterExtract extract = new TwitterExtract();
+ 
  Thread t; 
  JFrame mainFrame;
  JPanel controlPanel;
- JLabel resultLabel; 
+ JLabel positiveResultLabel; 
+ JLabel negativeResultLabel; 
+ JLabel neutralResultLabel; 
+
  JTextField textField;
  JButton runButton;
 
@@ -101,17 +156,22 @@ class UI implements Runnable
  public UI( Message message)
  {
      this.message = message;
+ 
+     extract.getDate();
 
      t = new Thread(this, "UI thread");
 
      mainFrame = new JFrame("Aladdin");
-     mainFrame.setSize(700,200);
+     mainFrame.setSize(1000,500);
      mainFrame.setResizable(false);
      mainFrame.setLayout(new GridLayout(1,1));
 
-     resultLabel = new JLabel(" ",JLabel.CENTER);
-     textField = new JTextField(45);
-     runButton = new JButton("Run");
+      positiveResultLabel = new JLabel(" ",JLabel.LEFT);
+      neutralResultLabel = new JLabel(" ",JLabel.LEFT);
+      negativeResultLabel = new JLabel(" ",JLabel.LEFT);
+      
+      textField = new JTextField(45);
+      runButton = new JButton("Run");
 
      mainFrame.addWindowListener(new WindowAdapter(){
           public void windowClosing(WindowEvent windowEvent){
@@ -141,7 +201,7 @@ class UI implements Runnable
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 0;
     gbc.gridy = 0;
-    panel.add(new JLabel("Enter News Headling"),gbc);
+    panel.add(new JLabel("Enter Tag Word"),gbc);
  
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 0;
@@ -166,11 +226,47 @@ class UI implements Runnable
     gbc.gridy = 3;
     panel.add(new JLabel(" "),gbc);
 
-
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 0;
     gbc.gridy = 4;
-    panel.add(resultLabel,gbc);
+    panel.add(new JLabel("Positive News "),gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 0;
+    gbc.gridy = 5;
+    panel.add(positiveResultLabel,gbc);
+ 
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 0;
+    gbc.gridy = 6;
+    panel.add(new JLabel(" "),gbc);
+
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 0;
+    gbc.gridy = 7;
+    panel.add(new JLabel("Neutral News "),gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 0;
+    gbc.gridy = 8;
+    panel.add(neutralResultLabel,gbc);
+ 
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 0;
+    gbc.gridy = 9;
+    panel.add(new JLabel(" "),gbc);
+
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 0;
+    gbc.gridy = 10;
+    panel.add(new JLabel("Negative News "),gbc);
+
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 0;
+    gbc.gridy = 11;
+    panel.add(negativeResultLabel,gbc);
  
     controlPanel.add(panel);
     mainFrame.setVisible(true);
@@ -180,16 +276,58 @@ class UI implements Runnable
         {
           public void actionPerformed(ActionEvent ae)
             {
-               
+
+               extract.extractStatus(textField.getText());
                message.putNews(textField.getText());
             }
         });
  
 while(true)
   {
-  
-    resultLabel.setText("The sentiment of above news is " +  message.getResult());
-  }
+       
+        ArrayList<String> positiveList =  message.getPositiveResult();
+        ArrayList<String> negativeList = message.getNegativeResult();
+        ArrayList<String> neutralList = message.getNeutralResult();
+
+        String positiveResult = " ";
+        String neutralResult = " ";
+        String negativeResult = " ";
+
+
+        for(String temp : positiveList)
+        {
+             positiveResult += temp;
+             positiveResult += '\n';
+        }
+
+        for(String temp : negativeList)
+        {
+               negativeResult += temp;
+               negativeResult += '\n';
+        }
+
+        for(String temp : neutralList)
+        {
+             neutralResult += temp;
+             neutralResult += '\n';
+        }
+
+        System.out.println("Positive");
+        System.out.println(positiveResult);
+
+        System.out.println("Negative");
+        System.out.println(negativeResult);
+
+        System.out.println("Neutral");
+        System.out.println(neutralResult);
+
+       // positiveResultLabel.setText(positiveResult);
+       // neutralResultLabel.setText(neutralResult);
+       // negativeResultLabel.setText(negativeResult);
+
+        File file = new File("../../src/resources/Twitter.txt");
+        file.delete();
+   }
  }
 }
 
@@ -200,6 +338,7 @@ class Background implements Runnable
   String test;
   String result;
 
+  ReadFile readFile=new ReadFile();
   NaiveBayes naiveBayes= new NaiveBayes();
   SentenceProcessing sentenceProcessing = new SentenceProcessing();
     
@@ -216,13 +355,40 @@ class Background implements Runnable
    {
     while(true)
     {
+      
        test = message.getNews();
-       test += '\n'; 
+       test = readFile.readFile("../../src/resources/Twitter.txt");
 
-       DataSet neutralDataSet = new DataSet(sentenceProcessing.sentenceProcessor(test));
-       result = naiveBayes.getOutput(neutralDataSet);
-     
-       message.putResult(result);
+       String [] testSplit = test.split("\n");
+ 
+       ArrayList<String> positiveList = new ArrayList<String>();
+       ArrayList<String> neutralList = new ArrayList<String>();
+       ArrayList<String> negativeList = new ArrayList<String>();
+   
+       for(String val: testSplit)
+         {
+       
+         val +='\n';
+
+         DataSet testDataSet = new DataSet(sentenceProcessing.sentenceProcessor(val));
+         result = naiveBayes.getOutput(testDataSet);
+  
+         if(result.equals("Positive"))
+         {
+           positiveList.add(val);
+         }
+         else if(result.equals("Neutral"))
+         {
+            neutralList.add(val);
+         }
+         else if(result.equals("Negative"))
+         {
+            negativeList.add(val);
+         }
+         
+         }
+
+         message.putResult(positiveList, neutralList, negativeList);
     } 
   }
 }
@@ -230,12 +396,9 @@ public class App
 {
  public static void main( String[] args )
     { 
-                TwitterExtract extract = new TwitterExtract();
-                extract.getDate();
-                extract.extractStatus();
- 
-//         Message messgae = new Message();
- //        new Background(messgae);
-  //       new UI(messgae);
+  
+         Message messgae = new Message();
+         new Background(messgae);
+         new UI(messgae);
     }
 }
