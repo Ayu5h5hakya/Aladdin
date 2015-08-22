@@ -40,7 +40,6 @@ class TwitterExtract{
         public void extractStatus(String input){
                 try{ 
                         try{
-                                System.out.println(input);
                                 String token_access="2784327338-kvhDBvfDZs5lNueguNfT8RRujaSJaa9ZGOoyoYZ";
                                 String token_secret="8orAqubKXLtKqVcDTVwcCrFrc6bVAhV83TNxuj6iVgYhH";
                                 String consumer_secret="WhQ4Fs2f5s3nvKAxYOfv5MYIeBi8D66ogPp1eaHBM66ZS9ZB34";
