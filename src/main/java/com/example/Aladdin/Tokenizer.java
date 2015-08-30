@@ -53,7 +53,7 @@ public class Tokenizer {
 
         try
         {
-            BufferedReader bufferedReader=new BufferedReader(new FileReader("C:\\Users\\Ayush\\Documents\\stopwords.txt"));
+            BufferedReader bufferedReader=new BufferedReader(new FileReader("stopwords.txt"));
             String line;
             while((line=bufferedReader.readLine())!=null)
             {
