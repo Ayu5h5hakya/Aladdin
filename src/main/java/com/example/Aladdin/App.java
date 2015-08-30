@@ -38,7 +38,7 @@ public class App
          System.out.println(result);
 
          */
-
+          
           System.out.println("Enter Tag");
           Scanner scanner = new Scanner(System.in);
           String tag = scanner.nextLine();
@@ -91,7 +91,8 @@ public class App
 
         for(String temp: negativeList)
             System.out.println(temp);
- 
-            
+
+//       NeuralNetwork neuralNetwork = new NeuralNetwork();
+
     }
 }
