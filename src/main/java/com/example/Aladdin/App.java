@@ -46,16 +46,27 @@ public class App
           extract.extractStatus(tag);
 
           String test = readFile.readFile("../../src/resources/Twitter.txt");
+
           String [] testSplit = test.split("\n");
-   
+  
+          String noResult;
+
        for(String val: testSplit)
          {
-       
+      
+         if(val.length() == 0)
+            {
+                break;
+            }
+
          val +='\n';
 
          DataSet testDataSet = new DataSet(sentenceProcessing.sentenceProcessor(val));
+         
          result = naiveBayes.getOutput(testDataSet);
-  
+
+         System.out.println("Hello" + result);
+
          if(result.equals("Positive"))
          {
            positiveList.add(val);
@@ -92,7 +103,7 @@ public class App
         for(String temp: negativeList)
             System.out.println(temp);
 
-//       NeuralNetwork neuralNetwork = new NeuralNetwork();
+  //       NeuralNetwork neuralNetwork = new NeuralNetwork();
 
     }
 }

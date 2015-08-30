@@ -11,7 +11,7 @@ class SentenceProcessing
  {
       String resultToken = new String();
 
-      while(inputData.length()!=0)
+     while(inputData.length()!=0)
       {
            int nextLine = inputData.indexOf('\n');
            String temp = inputData.substring(0,nextLine);
@@ -27,11 +27,13 @@ class SentenceProcessing
            for(String token : final_op)
               resultToken += token + ' ';
 
+
               resultToken = resultToken.substring(0,resultToken.length()-1)+'\n';
       }
 
     return resultToken;
- 
+
+
   }
 }
 

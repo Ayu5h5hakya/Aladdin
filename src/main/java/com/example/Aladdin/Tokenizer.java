@@ -1,4 +1,4 @@
-package com.example;
+package com.example.Aladdin;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -88,7 +88,7 @@ public class Tokenizer {
         }
         public String[] SetUpTagger(String[] input)
         {
-            System.out.println(input.length);
+            //System.out.println(input.length);
             String[] temp = new String[2];
             try {
                 BufferedReader bufferedReader = new BufferedReader(new FileReader("Nouns.txt"));
