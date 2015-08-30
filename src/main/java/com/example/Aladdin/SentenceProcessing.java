@@ -19,10 +19,9 @@ class SentenceProcessing
       
            Tokenizer tokenizer = new Tokenizer(temp);
            ArrayList<String> tokenizedtext = (ArrayList<String>) tokenizer.start();
-           boolean[] tokens = tokenizer.getTokens();
        
-           Porter porter = new Porter();
-           ArrayList<String> final_op = porter.start(tokenizedtext,tokens);
+           newPorter porter = new newPorter();
+           ArrayList<String> final_op = porter.start(tokenizedtext);
 
    
            for(String token : final_op)
