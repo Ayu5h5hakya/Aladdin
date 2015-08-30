@@ -1,4 +1,4 @@
-package com.example.Aladdin;
+package com.example;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,12 +14,15 @@ import java.util.List;
  */
 public class Tokenizer {
     private String input;
-    private boolean[] tokens;
     ArrayList<String> stopwordslist, finaltext;
     String[] stopwords;
+    HashMap<String,Integer> adjectives,adverbs,conjuction,determiners,nouns,preposition,prodeterminer,verbs;
+    Tagger tagger;
     Tokenizer(String input)
     {
+        finaltext = new ArrayList<>();
         this.input = input;
+        tagger= new Tagger();
     }
 
     private String Clean(String str) {
@@ -37,13 +41,14 @@ public class Tokenizer {
 
     List<String> start()
     {
+
         stopwordslist=new ArrayList<String>();
         String[] result= input.split("\\s+");
-
         for(int i=0;i<result.length;++i)
         {
             result[i]=result[i].replaceAll("[^a-zA-Z]","");
         }
+        result = tagger.SetUpTagger(result);
         finaltext=new ArrayList<String>(Arrays.asList(result));
 
         try
@@ -72,19 +77,37 @@ public class Tokenizer {
                 counter++;
             }
         }
-    tokens =new boolean[finaltext.size()];
-    for(int i =0;i<finaltext.size();++i)
-    {
-        if(Character.isUpperCase(finaltext.get(i).charAt(0)))
-        {
-            tokens[i]= false;
-        }
-        else tokens[i] = true;
-    }
-
-
     return finaltext;
     }
 
-    public boolean[] getTokens(){return  tokens;}
+    private class Tagger
+    {
+        Tagger()
+        {
+            nouns=new HashMap<>();
+        }
+        public String[] SetUpTagger(String[] input)
+        {
+            System.out.println(input.length);
+            String[] temp = new String[2];
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new FileReader("Nouns.txt"));
+                String line=null;
+                while ((line = bufferedReader.readLine())!=null)
+                {
+                    temp = line.split("\\s+");
+                    nouns.put(temp[0],Integer.parseInt(temp[1]));
+                }
+                for(int i=0;i<input.length;++i)
+                {
+                    if(input[i].equals(""))continue;
+                    if(nouns.containsKey(input[i]) || Character.isUpperCase(input[i].charAt(0))) input[i]+="_NN";
+                }
+            }
+            catch (FileNotFoundException e) {}
+            catch (IOException e) {}
+
+            return input;
+        }
+    }
 }
