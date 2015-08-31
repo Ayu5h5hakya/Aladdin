@@ -39,9 +39,13 @@ public class App
 
          */
           
+          /* Feature/web-interface *
+           * Accept keywords from command line arguments instead of stdin
           System.out.println("Enter Tag");
           Scanner scanner = new Scanner(System.in);
-          String tag = scanner.nextLine();
+          */
+
+          String tag = args[0];
 
           extract.extractStatus(tag);
 
@@ -54,54 +58,55 @@ public class App
        for(String val: testSplit)
          {
       
-         if(val.length() == 0)
+            if(val.length() == 0)
             {
-                break;
+                   break;
             }
 
-         val +='\n';
+            val +='\n';
 
-         DataSet testDataSet = new DataSet(sentenceProcessing.sentenceProcessor(val));
-         
-         result = naiveBayes.getOutput(testDataSet);
+            DataSet testDataSet = new DataSet(sentenceProcessing.sentenceProcessor(val));
+            
+            result = naiveBayes.getOutput(testDataSet);
 
-         System.out.println("Hello" + result);
-
-         if(result.equals("Positive"))
-         {
-           positiveList.add(val);
-         }
-         else if(result.equals("Neutral"))
-         {
-            neutralList.add(val);
-         }
-         else if(result.equals("Negative"))
-         {
-            negativeList.add(val);
-         }
+            if(result.equals("Positive"))
+            {
+              positiveList.add(val);
+            }
+            else if(result.equals("Neutral"))
+            {
+               neutralList.add(val);
+            }
+            else if(result.equals("Negative"))
+            {
+               negativeList.add(val);
+            }
          
          }
 
         File file = new File("../../src/resources/Twitter.txt");
         file.delete();
    
-        System.out.println();
-        System.out.println("Positive News");
+        System.out.println("<positive>");
 
         for(String temp: positiveList)
             System.out.println(temp);
     
-        System.out.println();
-        System.out.println("Neutral News");
+        System.out.println("</positive>");
+
+        System.out.println("<neutral>");
 
         for(String temp: neutralList)
             System.out.println(temp);
     
-        System.out.println();
-        System.out.println("Negative News");
+        System.out.println("</neutral>");
+
+        System.out.println("<negative>");
 
         for(String temp: negativeList)
             System.out.println(temp);
+
+        System.out.println("</negative>");
 
   //       NeuralNetwork neuralNetwork = new NeuralNetwork();
 
