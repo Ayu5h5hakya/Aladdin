@@ -44,7 +44,7 @@ public class App
           System.out.println("Enter Tag");
           Scanner scanner = new Scanner(System.in);
           */
-
+          
           String tag = args[0];
 
           extract.extractStatus(tag);
@@ -108,7 +108,7 @@ public class App
 
         System.out.println("</negative>");
 
-  //       NeuralNetwork neuralNetwork = new NeuralNetwork();
+    //         NeuralNetwork neuralNetwork = new NeuralNetwork();
 
     }
 }

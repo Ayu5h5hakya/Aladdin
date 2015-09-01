@@ -34,7 +34,7 @@ class NeuralNetwork
       String negativeData = sentenceProcessing.sentenceProcessor(readFile.readFile("NegativeNews.txt"));
       String neutralData = sentenceProcessing.sentenceProcessor(readFile.readFile("NeutralNews.txt"));
       
-       String testData = sentenceProcessing.sentenceProcessor("kill\n");
+       String testData = sentenceProcessing.sentenceProcessor("save\n");
 
        DataSet positiveDataSet = new DataSet(positiveData);
        DataSet negativeDataSet = new DataSet(negativeData);
@@ -64,7 +64,7 @@ class NeuralNetwork
 
         NeuralNetwork(60, 60, 1);
 
-        int maxRuns = 50000;
+        int maxRuns = 5000;
 
         double minErrorCondition = 0.001;
        
@@ -292,7 +292,7 @@ private void NeuralNetwork(int input, int hidden, int output)
         for (Neuron neuron : hiddenLayer) {
             ArrayList<Connection> connections = neuron.getAllInConnections();
             for (Connection conn : connections) {
-                double newWeight = getRandom();
+                double newWeight = getRandom()/60.0;
                 conn.setWeight(newWeight);
             }
         }
@@ -385,8 +385,8 @@ private void trainedWeights()
 
 // random
  private double getRandom() {
-        return randomWeightMultiplier * (rand.nextDouble() * 2 - 1); // [-1;1[
-    }
+     return randomWeightMultiplier * (rand.nextDouble() * 2 -1) ; 
+ }
 
 private void takeTestValues(String data)
 {
