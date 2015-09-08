@@ -2,8 +2,8 @@ com/example/Aladdin/NeuralNetwork.class
 com/example/Aladdin/Connection.class
 com/example/Aladdin/SentenceProcessing.class
 com/example/Aladdin/DataSet.class
-com/example/Aladdin/Mystemmer.class
 com/example/Aladdin/newPorter.class
+com/example/Aladdin/Mystemmer.class
 com/example/Aladdin/Probability.class
 com/example/Aladdin/NaiveBayes.class
 com/example/Aladdin/Tokenizer$Tagger.class

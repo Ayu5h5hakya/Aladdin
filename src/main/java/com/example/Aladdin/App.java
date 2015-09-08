@@ -113,21 +113,21 @@ public class App
                  System.out.println("<positive>");
 
                  for(String temp: positiveList)
-                     System.out.println(temp);
+                     System.out.print(temp);
     
                  System.out.println("</positive>");
 
                  System.out.println("<neutral>");
 
                  for(String temp: neutralList)
-                     System.out.println(temp);
+                     System.out.print(temp);
     
                  System.out.println("</neutral>");
 
                  System.out.println("<negative>");
 
                  for(String temp: negativeList)
-                     System.out.println(temp);
+                     System.out.print(temp);
 
                  System.out.println("</negative>");
           }else{
