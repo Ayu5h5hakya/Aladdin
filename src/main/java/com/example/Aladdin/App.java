@@ -64,7 +64,7 @@ public class App
                 DataSet singleTitle  = new DataSet(sentenceProcessing.sentenceProcessor(testTitle));
                 result = naiveBayes.getOutput(singleTitle);
                 System.out.println(result);
-
+          
           }else if(option.equals("-t")){
 
 
@@ -136,7 +136,7 @@ public class App
 
           }
 
-  //       NeuralNetwork neuralNetwork = new NeuralNetwork();
+    //         NeuralNetwork neuralNetwork = new NeuralNetwork();
 
     }
 }
