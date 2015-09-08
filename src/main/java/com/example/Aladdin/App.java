@@ -14,6 +14,16 @@ import java.lang.*;
 public class App 
 {
 
+/** 
+ * Command line arguments are as:
+ * args[0] is the option:
+ *          -s for single title evaluation
+ *          -t for keyword extraction on twitter
+ *
+ * args[1] is the actual keyword or title
+ *
+ */
+
  public static void main( String[] args )
     { 
  
@@ -29,15 +39,13 @@ public class App
           extract.getDate();
           String result;
 
-        /*
-         *Testing the sentiments of single news
+          if(args.length != 2){
 
+                  System.out.println("Invalid number of arguments");
+                  System.exit(0);
 
-         DataSet hello = new DataSet(sentenceProcessing.sentenceProcessor("250 were killed\n"));
-         result = naiveBayes.getOutput(hello);
-         System.out.println(result);
+          }
 
-         */
           
           /* Feature/web-interface *
            * Accept keywords from command line arguments instead of stdin
@@ -45,68 +53,88 @@ public class App
           Scanner scanner = new Scanner(System.in);
           */
 
-          String tag = args[0];
+          String option = args[0];
 
-          extract.extractStatus(tag);
+          if(option.equals("-s")){
 
-          String test = readFile.readFile("../../src/resources/Twitter.txt");
+                  String testTitle = args[1];
 
-          String [] testSplit = test.split("\n");
+                  testTitle += '\n';
+
+                DataSet singleTitle  = new DataSet(sentenceProcessing.sentenceProcessor(testTitle));
+                result = naiveBayes.getOutput(singleTitle);
+                System.out.println(result);
+
+          }else if(option.equals("-t")){
+
+
+                String tag = args[1];
+
+                extract.extractStatus(tag);
+
+                String test = readFile.readFile("../../src/resources/Twitter.txt");
+
+                String [] testSplit = test.split("\n");
   
-          String noResult;
+                String noResult;
 
-       for(String val: testSplit)
-         {
+                for(String val: testSplit)
+                  {
       
-            if(val.length() == 0)
-            {
-                   break;
-            }
+                     if(val.length() == 0)
+                     {
+                            break;
+                     }
 
-            val +='\n';
+                     val +='\n';
 
-            DataSet testDataSet = new DataSet(sentenceProcessing.sentenceProcessor(val));
-            
-            result = naiveBayes.getOutput(testDataSet);
+                     DataSet testDataSet = new DataSet(sentenceProcessing.sentenceProcessor(val));
+                     
+                     result = naiveBayes.getOutput(testDataSet);
 
-            if(result.equals("Positive"))
-            {
-              positiveList.add(val);
-            }
-            else if(result.equals("Neutral"))
-            {
-               neutralList.add(val);
-            }
-            else if(result.equals("Negative"))
-            {
-               negativeList.add(val);
-            }
-         
-         }
+                     if(result.equals("Positive"))
+                     {
+                       positiveList.add(val);
+                     }
+                     else if(result.equals("Neutral"))
+                     {
+                        neutralList.add(val);
+                     }
+                     else if(result.equals("Negative"))
+                     {
+                        negativeList.add(val);
+                     }
+                  
+                  }
 
-        File file = new File("../../src/resources/Twitter.txt");
-        file.delete();
+                 File file = new File("../../src/resources/Twitter.txt");
+                 file.delete();
    
-        System.out.println("<positive>");
+                 System.out.println("<positive>");
 
-        for(String temp: positiveList)
-            System.out.println(temp);
+                 for(String temp: positiveList)
+                     System.out.println(temp);
     
-        System.out.println("</positive>");
+                 System.out.println("</positive>");
 
-        System.out.println("<neutral>");
+                 System.out.println("<neutral>");
 
-        for(String temp: neutralList)
-            System.out.println(temp);
+                 for(String temp: neutralList)
+                     System.out.println(temp);
     
-        System.out.println("</neutral>");
+                 System.out.println("</neutral>");
 
-        System.out.println("<negative>");
+                 System.out.println("<negative>");
 
-        for(String temp: negativeList)
-            System.out.println(temp);
+                 for(String temp: negativeList)
+                     System.out.println(temp);
 
-        System.out.println("</negative>");
+                 System.out.println("</negative>");
+          }else{
+
+                  System.out.println("Invalid option: Use -s or -t ");
+
+          }
 
   //       NeuralNetwork neuralNetwork = new NeuralNetwork();
 
