@@ -5,19 +5,19 @@
 Aladdin is a sentiment analyzer that classifies news titles into three categories: positive, negative and neutral.
 There are no target entities i.e it looks at the general sentiment.
 
-`Positive
+###Positive
 ```
         -South Korea declares end to Mers
         -California Man helps homeless people
 ```
 
-`Negative
+###Negative
 ```
         -Runaway lorry kills Mexico Pilgrims
         -49 people infected with the H1N1 virus
 ```
 
-`Neutral
+###Neutral
 ```
         -Sony's net profit more than triples
         -Zayn Malik signs solo record deal
@@ -26,7 +26,9 @@ There are no target entities i.e it looks at the general sentiment.
 ##Compilation
 
 In the project root i.e inside *Aladdin/*, run:
-        `mvn compile
+```
+        mvn compile
+```
 
 ##Execution
 
@@ -42,12 +44,15 @@ Run the program:
 ```
 
 Note:
-The first argument is a compulsory option:
+
+The first argument is a compulsory option that specifies what the second argument is for:
+
             -s for single title classification
+
             -t for getting related news titles from Twitter
 
 ##Web application
 
 To run the web application, you need a running php server.
 Place the project under the server root.
-You can then simply run `http://localhost/Aladdin/index.php
+You can then simply hit `http://localhost/Aladdin/index.php` on the browser.
