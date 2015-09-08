@@ -18,9 +18,9 @@ public class App
     { 
  
           ReadFile readFile=new ReadFile();
-          NaiveBayes naiveBayes= new NaiveBayes();
+  //        NaiveBayes naiveBayes= new NaiveBayes();
           SentenceProcessing sentenceProcessing = new SentenceProcessing();
-          TwitterExtract extract = new TwitterExtract();
+ /*         TwitterExtract extract = new TwitterExtract();
 
           ArrayList<String> positiveList = new ArrayList<String>();
           ArrayList<String> neutralList = new ArrayList<String>();
@@ -28,7 +28,7 @@ public class App
    
           extract.getDate();
           String result;
-
+*/
         /*
          *Testing the sentiments of single news
 
@@ -45,6 +45,7 @@ public class App
           Scanner scanner = new Scanner(System.in);
           */
           
+        /*
           String tag = args[0];
 
           extract.extractStatus(tag);
@@ -108,7 +109,12 @@ public class App
 
         System.out.println("</negative>");
 
-    //         NeuralNetwork neuralNetwork = new NeuralNetwork();
+         */
+    
+            NeuralNetwork neuralNetwork = new NeuralNetwork();
+            String result = neuralNetwork.getResult(sentenceProcessing.sentenceProcessor("Turkey hit by series of attacks\n"));
+
+            System.out.println(result);
 
     }
 }

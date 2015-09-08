@@ -29,6 +29,7 @@ public class Neuron {
              
             s = s + (weight*a);
         }
+       
         s = s + (biasConnection.getWeight()*bias);
          
         output = g(s);
@@ -40,7 +41,7 @@ public class Neuron {
     }
  
     double sigmoid(double x) {
-        return(-1.0 +  2.0 / (1.0 +  (Math.exp(-x))));
+        return 1.0 / (1.0 +  (Math.exp(-x)));
     }
      
     public void addInConnectionsS(ArrayList<Neuron> inNeurons){
