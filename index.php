@@ -21,6 +21,22 @@
     <head>
             <?php 
 
+                if(isset($_GET["title"])){
+                    $testTitle = $_GET["title"];
+                }
+
+                if(!empty($testTitle)){
+
+                    chdir('target/classes');
+
+                    $command ='java -cp .:twitter4jcore.jar com.example.Aladdin.App -s "'.$testTitle.'" 2>&1'; 
+
+                    exec($command,$titleOutput);
+
+                    $titleResult = $titleOutput[0];
+                }
+                
+
                 if(isset($_GET["keyword"])){
                     $keyword = $_GET["keyword"];
                 }
@@ -29,9 +45,10 @@
 
                     chdir('target/classes');
 
-                    $command ='java -cp .:twitter4jcore.jar com.example.Aladdin.App "'.$keyword.'" 2>&1'; 
+                    $command ='java -cp .:twitter4jcore.jar com.example.Aladdin.App -t "'.$keyword.'" 2>&1'; 
 
                     exec($command,$output);
+
 
                     $positiveNews = [];
                     $negativeNews = [];
@@ -107,6 +124,16 @@
 
             </form>
 
+            <br>
+
+            <form action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="get">
+
+                Enter title: <input type="text" name="title"/>
+
+                <input type="submit" value="Go"/>
+
+            </form>
+
                 <?php
                     if(!empty($keyword)){
 
@@ -114,7 +141,11 @@
 
                 ?>
 
-                        <h2> Positive news </h2>
+                        <h2>
+                                Search Results for keyword <u><?php echo $keyword; ?></u>
+                        </h2>
+
+                        <h3> Positive news </h3>
 
                         <?php 
                             if(count($positiveNews) == 0){
@@ -130,7 +161,7 @@
 
                         ?>
                         
-                        <h2> Neutral news </h2>
+                        <h3> Neutral news </h3>
 
                         <?php 
                             if(count($neutralNews) == 0){
@@ -145,7 +176,7 @@
                             }
 
                         ?>
-                        <h2> Negative news </h2>
+                        <h3> Negative news </h3>
 
                         <?php 
                             if(count($negativeNews) == 0){
@@ -158,6 +189,18 @@
 
                                 }
                             }
+                    }
+
+                ?>
+
+                <?php
+
+                    if(!empty($testTitle)){
+
+                            echo "<br>";
+                            echo $testTitle." = ".$titleResult; 
+                            echo "<br>";
+
                     }
 
                 ?>
