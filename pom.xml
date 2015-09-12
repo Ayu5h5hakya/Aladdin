@@ -15,11 +15,19 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
+     <dependency>
         <groupId>org.twitter4j</groupId>
         <artifactId>twitter4j-core</artifactId>
         <version>4.0.4</version>
      </dependency>
+
+   <dependency>
+         <groupId>org.jaws</groupId>
+        <artifactId>jaws-bin</artifactId>
+        <scope>system</scope>
+        <systemPath>/var/www/html/Aladdin/src/resources/jaws-bin.jar</systemPath>
+        <version>1.0</version>
+    </dependency>
 
   </dependencies>
 

@@ -352,8 +352,9 @@ public class newPorter {
         for(String input:inputs)
         {
             this.input=input;
-            if(!this.input.contains("_NN"))
+            if(this.input.contains("_Verb"))
             {
+                this.input = this.input.substring(0,this.input.indexOf("_"));
                 exceptionfound=false;
                 j=0;
                 exceptions();

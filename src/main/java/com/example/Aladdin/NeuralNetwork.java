@@ -22,8 +22,8 @@ class NeuralNetwork
  
      double epsilon = 0.00000000001;
  
-     double learningRate = 0.9f;
-     double momentum = 0.7f;
+     double learningRate = 0.1f;
+     double momentum = 0.1f;
  
      //read data from file
       ReadFile readFile = new ReadFile();
@@ -34,7 +34,7 @@ class NeuralNetwork
       String negativeData = sentenceProcessing.sentenceProcessor(readFile.readFile("NegativeNews.txt"));
       String neutralData = sentenceProcessing.sentenceProcessor(readFile.readFile("NeutralNews.txt"));
       
-       String testData = sentenceProcessing.sentenceProcessor("save\n");
+    //   String testData = sentenceProcessing.sentenceProcessor("3 police was killed by Maoist\n");
 
        DataSet positiveDataSet = new DataSet(positiveData);
        DataSet negativeDataSet = new DataSet(negativeData);
@@ -44,6 +44,7 @@ class NeuralNetwork
      
       HashMap<String,LinkedList<Double>> weight = featureVector.getWeight();
 
+            
       ArrayList<double[]> inputs = new ArrayList<double[]>();
       ArrayList<double[]> expectedOutputs = new ArrayList<double[]>();
       ArrayList<double[]> resultOutputs = new ArrayList<double[]>();
@@ -56,22 +57,32 @@ class NeuralNetwork
       final HashMap<String, Double> weightUpdate = new HashMap<String, Double>();
  
       public NeuralNetwork()
-      {
+              {
+        
+//         featureVectors(testData);
       
-        takeValues(positiveData,new double[]{1});
-        takeValues(neutralData, new double[]{0});
-        takeValues(negativeData,new double[]{-1});
+           takeValues(positiveData,new double[]{1,0,0});
+           takeValues(neutralData, new double[]{0,1,0});
+           takeValues(negativeData,new double[]{0,0,1});
 
-        NeuralNetwork(60, 60, 1);
+          NeuralNetwork(90, 90, 3);
 
-        int maxRuns = 5000;
+          int maxRuns = 50000;
 
-        double minErrorCondition = 0.001;
-       
-      //  run(maxRuns, minErrorCondition);
+           double minErrorCondition = 0.001;
+      
+      //    run(maxRuns, minErrorCondition);
 
-          runTest();
       }
+
+void featureVectors(String data)
+{
+
+System.out.println(data);
+String dat = data.substring(0,data.length()-1);
+System.out.println(weight.get(dat));
+
+}
 
     public void setInput(double inputs[]) {
         for (int i = 0; i < inputLayer.size(); i++) {
@@ -115,7 +126,7 @@ class NeuralNetwork
                 double ai = con.leftNeuron.getOutput();
                 double desiredOutput = expectedOutput[i];
  
-                double partialDerivative = - 0.5 * (1 - ak)*(1 + ak) * ai
+                double partialDerivative = -ak * (1 - ak) * ai
                         * (desiredOutput - ak);
                 double deltaWeight = -learningRate * partialDerivative;
                 double newWeight = con.getWeight() + deltaWeight;
@@ -139,10 +150,10 @@ class NeuralNetwork
                     double ak = out_neu.getOutput();
                     j++;
                     sumKoutputs = sumKoutputs
-                            + (-(desiredOutput - ak) * 0.5 * (1 - ak) * (1 + ak) * wjk);
+                            + (-(desiredOutput - ak) * ak * (1 - ak) * wjk);
                 }
  
-                double partialDerivative = 0.5*(1 + aj) * (1 - aj) * ai * sumKoutputs;
+                double partialDerivative = aj * (1 - aj) * ai * sumKoutputs;
                 double deltaWeight = -learningRate * partialDerivative;
                 double newWeight = con.getWeight() + deltaWeight;
                 con.setDeltaWeight(deltaWeight);
@@ -151,19 +162,33 @@ class NeuralNetwork
         }
     }
 
-private void runTest()
+public  String getResult(String testData)
 {
 
     takeTestValues(testData);
 
     setInput(tests);
+
     activate();
 
     double [] finalResult = getOutput();
 
-    System.out.println(testData);
-    for(double temp : finalResult)
-        System.out.println(temp);
+    if((finalResult[0] > finalResult[1]) && (finalResult[0]>finalResult[2]))
+    {
+       return "Positive";
+    }
+
+    else if(finalResult[2] > finalResult[1])
+    {
+        return "Negative";
+    }
+
+    else
+    {
+
+         return "Neutral";
+    }
+
 }
 
 private void run(int maxSteps, double minError) {
@@ -176,27 +201,35 @@ private void run(int maxSteps, double minError) {
             for (int p = 0; p < inputs.size(); p++) {
                  
                 setInput(inputs.get(p));
-                 activate();
+                activate();
    
                 output = getOutput();
+           
                 resultOutputs.set(p,output);
         
                 double[] temp = expectedOutputs.get(p);
 
                 for (int j = 0; j < temp.length; j++) {
+                 
+                    if(Math.abs(output[j] - temp[j])<0.00000001)
+                    {
+                         WeightUpdate();
+                         System.exit(0);
+                    }
+
                     double err = Math.pow(output[j] - temp[j], 2);
                     error += err;
+       
                 }
   
                 applyBackpropagation(expectedOutputs.get(p));
-            }
-
-            System.out.println(i);
-
         }
+                 
+                   System.out.println( error + " " +i);
 
+    }
+   
     WeightUpdate();
-            
 }
 
 private void WeightUpdate()
@@ -292,7 +325,7 @@ private void NeuralNetwork(int input, int hidden, int output)
         for (Neuron neuron : hiddenLayer) {
             ArrayList<Connection> connections = neuron.getAllInConnections();
             for (Connection conn : connections) {
-                double newWeight = getRandom()/60.0;
+                double newWeight = getRandom()/900.0;
                 conn.setWeight(newWeight);
             }
         }
@@ -300,7 +333,7 @@ private void NeuralNetwork(int input, int hidden, int output)
         for (Neuron neuron : outputLayer) {
             ArrayList<Connection> connections = neuron.getAllInConnections();
             for (Connection conn : connections) {
-                double newWeight = getRandom();
+                double newWeight = getRandom()/900.0;
                 conn.setWeight(newWeight);
             }
         }
@@ -391,22 +424,23 @@ private void trainedWeights()
 private void takeTestValues(String data)
 {
 
+ String dataValue = data.substring(0,data.length()-1);
 
-tests = new double[60];
+tests = new double[90];
 
  int i = 0;
- String[] dataSplit = data.split(" ");
 
+ String[] dataSplit = dataValue.split(" ");
  
  for( String single : dataSplit)
  {
+
     if(weight.get(single) != null)
     {
       for(double value: weight.get(single))
       {
-
            tests[i] = value;
-           ++i;
+          ++i;
       }
     }
     else
@@ -426,13 +460,13 @@ tests = new double[60];
 private void takeValues(String data, double[]output)
    {
 
-     String[] dataSplit= data.split("\n");
-     
+      String[] dataSplit= data.split("\n");
+    
       for(String temp : dataSplit)
       {
           String[] tempSplit = temp.split(" ");
 
-             double[] result = new double[60];
+             double[] result = new double[90];
              int i=0;
       
         for(String single : tempSplit)
@@ -461,11 +495,12 @@ private void takeValues(String data, double[]output)
             }
           }
 
-         inputs.add(result); 
+          inputs.add(result); 
           expectedOutputs.add(output);
-          resultOutputs.add(new double[]{-2}); 
-      }
+          resultOutputs.add(new double[]{0,0,0}); 
+     }
 
    }
+
 }
 

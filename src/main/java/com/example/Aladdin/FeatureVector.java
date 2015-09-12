@@ -81,9 +81,11 @@ class FeatureVector
                   termFrequency.put(me.getKey(),temp);
                 }
         }
-        else if(flag.equals("negative"))
+           
+        else if(flag.equals("neutral"))
          {
-            for(Map.Entry<String,Integer> me: set)
+
+        for(Map.Entry<String,Integer> me: set)
              {
                 if(termFrequency.containsKey(me.getKey()))
                  {
@@ -104,11 +106,10 @@ class FeatureVector
 
                 }
              }
-         }
-        
-        else if(flag.equals("neutral"))
-         {
 
+         }
+     else if(flag.equals("negative"))
+         {
             for(Map.Entry<String,Integer> me: set)
              {
                 if(termFrequency.containsKey(me.getKey()))
@@ -129,8 +130,9 @@ class FeatureVector
 
                 }
              }
-
          }
+ 
+         
 
     }
 
@@ -144,6 +146,7 @@ class FeatureVector
 
     private void calculateDocumentFrequency()
     {
+    
         Set<Map.Entry<String,LinkedList<Integer>>>  set = termFrequency.entrySet();
  
         int count = 0;
@@ -152,11 +155,15 @@ class FeatureVector
        {
              LinkedList<Integer> temp = termFrequency.get(me.getKey());
 
+             
              for( Integer value: temp)
-               if(value != 0)
+               { 
+                   if(value != 0)
                    ++count;
+              }
 
              documentFrequency.put(me.getKey(),count);
+            
              count = 0;
        }        
 
@@ -176,20 +183,26 @@ class FeatureVector
 
              for(Integer value: temp)
              {
+
                 if(value > 0)
-                    result.add((1+Math.log10((double)value)) * Math.log10(3/(double)documentValue));                           
+                  { 
+                           result.add((1.0 +Math.log10((double)value)) * Math.log10(1.0 + (double)3/documentValue));                           
+                  //        result.add((double)value);                           
+                  } 
                 else
                     result.add((double)0.0);
              }
- 
-             weight.put(me.getKey(),result);
-       }
+
+            weight.put(me.getKey(),result);
+
+      }
 
       // displayWeight();
   }
   
   public HashMap<String,LinkedList<Double>> getWeight()
             {
+
              return weight;
             }
 }

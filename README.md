@@ -39,8 +39,8 @@ First move into the classes directory:
 
 Run the program:
 ```
- java -cp .:twitter4jcore.jar com.example.Aladdin.App -s "Single News Title"
- java -cp .:twitter4jcore.jar com.example.Aladdin.App -t "Nepal"
+java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -s "Single News Title"
+java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -t "dead"
 ```
 
 Note:

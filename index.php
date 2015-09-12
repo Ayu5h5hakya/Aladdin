@@ -37,8 +37,8 @@
                 if(!empty($testTitle)){
 
                     chdir('target/classes');
-
-                    $command ='java -cp .:twitter4jcore.jar com.example.Aladdin.App -s "'.$testTitle.'" 2>&1'; 
+ 
+                    $command ='java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -s '.$testTitle.' 2>&1'; 
 
                     exec($command,$titleOutput);
 
@@ -54,7 +54,7 @@
 
                     chdir('target/classes');
 
-                    $command ='java -cp .:twitter4jcore.jar com.example.Aladdin.App -t "'.$keyword.'" 2>&1'; 
+                    $command ='java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -t '.$keyword.' 2>&1'; 
 
                     exec($command,$output);
 
