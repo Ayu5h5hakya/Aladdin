@@ -10,3 +10,23 @@
 .aladdin-title p{
         font-size: 2.0em;
 }
+
+.aladdin-single-result{
+        margin-top: 40px;
+        font-family: courier;
+        text-align: center;
+}
+
+.aladdin-single-result p{
+        font-style: italic;
+        font-size: 1.5em;
+}
+
+.aladdin-single-result h4{
+        font-style: italic;
+        font-size: 2.0em;
+}
+
+.aladdin-single-result h2{
+        font-size: 3.5em;
+}

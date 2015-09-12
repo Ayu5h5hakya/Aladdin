@@ -28,8 +28,6 @@
 
             <?php 
 
-                
-
                 if(isset($_GET["title"])){
                     $testTitle = $_GET["title"];
                 }
@@ -38,11 +36,12 @@
 
                     chdir('target/classes');
  
-                    $command ='java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -s '.$testTitle.' 2>&1'; 
+                    $command ='java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -s "'.$testTitle.'" 2>&1'; 
 
                     exec($command,$titleOutput);
 
-                    $titleResult = $titleOutput[0];
+                    $titleResultNB = $titleOutput[0];
+                    $titleResultNN = $titleOutput[1];
                 }
                 
 
@@ -54,14 +53,18 @@
 
                     chdir('target/classes');
 
-                    $command ='java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -t '.$keyword.' 2>&1'; 
+                    $command ='java -cp .:jaws-bin.jar:twitter4jcore.jar com.example.Aladdin.App -t "'.$keyword.'" 2>&1'; 
 
                     exec($command,$output);
 
 
-                    $positiveNews = [];
-                    $negativeNews = [];
-                    $neutralNews = [];
+                    $positiveNewsNB = [];
+                    $negativeNewsNB = [];
+                    $neutralNewsNB = [];
+
+                    $positiveNewsNN = [];
+                    $negativeNewsNN = [];
+                    $neutralNewsNN = [];
 
                     /** 
                      * The output produced by the java application is as:
@@ -83,6 +86,7 @@
                      */
 
                     $running = "undefined";
+                    $sourceVal = "undefined";
 
                     foreach($output as $val){
 
@@ -104,14 +108,38 @@
                             }elseif($val == "</neutral>"){
                                     $running = "undefined";
                                     continue;
+                            }elseif($val == "<source>"){
+                                    $running = "source";
+                                    continue;
+                            }elseif($val == "</source>"){
+                                    $running = "undefined";
+                                    continue;
                             }
 
-                            if($running == "positive"){
-                                    $positiveNews[] = $val;
-                            }elseif($running == "negative"){
-                                    $negativeNews[] = $val;
-                            }elseif($running == "neutral"){
-                                    $neutralNews[] = $val;
+                            if($running == "source"){
+                                    $sourceVal = $val;
+                                    continue;
+                            }
+
+                            if($sourceVal == "naive"){
+
+                                if($running == "positive"){
+                                        $positiveNewsNB[] = $val;
+                                }elseif($running == "negative"){
+                                        $negativeNewsNB[] = $val;
+                                }elseif($running == "neutral"){
+                                        $neutralNewsNB[] = $val;
+                                }                            
+
+                            } elseif($sourceVal == "neural"){
+
+                                if($running == "positive"){
+                                        $positiveNewsNN[] = $val;
+                                }elseif($running == "negative"){
+                                        $negativeNewsNN[] = $val;
+                                }elseif($running == "neutral"){
+                                        $neutralNewsNN[] = $val;
+                                }                            
                             }
                     }
 
@@ -131,6 +159,12 @@
                 $negativeNews[0] = "Nepal is lost";
                 $negativeNews[1] = "Kathmandu isn't safe";
                  */
+
+                /*
+                $testTitle = "Apple releases new Iphone";
+                $titleResultNB = "Positive";
+                $titleResultNN = "Neutral";
+                 */
                 
             ?>
 
@@ -149,16 +183,16 @@
                     </div>
 
                     <div class="row">
-                            <div class="col-md-6 col-md-offset-3">
+                            <div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
                                     <form class="form-group" action=<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?> method="get">
 
                                                 <label for="keyword">Enter Keyword:</label> 
                                         <div class="row">
-                                                <div class="col-md-9">
+                                                <div class="col-sm-9">
                                                         <input class="form-control" type="text" name="keyword"/>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-sm-3">
                                                         <input class="btn btn-primary" type="submit" value="Go"/>
                                                 </div>
 
@@ -171,11 +205,11 @@
 
                                         <label for="title">Enter title:</label>
                                         <div class="row">
-                                                <div class="col-md-9">
+                                                <div class="col-sm-9">
                                                         <input  class="form-control" type="text" name="title"/>
                                                 </div>
 
-                                                <div class="col-md-3">
+                                                <div class="col-sm-3">
                                                         <input class="btn btn-primary" type="submit" value="Classify"/>
                                                 </div>
                                         </div>
@@ -195,6 +229,11 @@
         Search Results for keyword: <a href="#"><u><?php echo $keyword; ?></u></a>
         </h3>
 
+        <h3> Naive Bayes Results </h3>
+
+        <br>
+
+        <!-- Naive Bayes Results -->
         <div class="panel-group">
           <div class="panel panel-default">
 
@@ -207,14 +246,14 @@
             <div id="collapse1" class="panel-collapse collapse">
                 <div class="panel-body">
 <?php 
-                        if(count($positiveNews) == 0){
+                        if(count($positiveNewsNB) == 0){
                                 echo $emptyMessage;
                         }else{
                                 echo '<ul class="list-group">';
-                                foreach($positiveNews as $posnews){
+                                foreach($positiveNewsNB as $posnews_nb){
 
                                         echo '<li class="list-group-item list-group-item-success">';
-                                        echo $posnews;
+                                        echo $posnews_nb;
                                         echo '</li>';
 
                                 }
@@ -235,14 +274,111 @@
                 <div class="panel-body">
 
 <?php 
-                        if(count($neutralNews) == 0){
+                        if(count($neutralNewsNB) == 0){
                                 echo $emptyMessage;
                         }else{
                                 echo '<ul class="list-group">';
-                                foreach($neutralNews as $neunews){
+                                foreach($neutralNewsNB as $neunews_nb){
 
                                         echo '<li class="list-group-item list-group-item-info">';
-                                        echo $neunews;
+                                        echo $neunews_nb;
+                                        echo '</li>';
+
+                                }
+                                echo '</ul>';
+                        }
+
+?>
+
+                </div>
+            </div>
+
+
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse3">Negative News</a>
+                </h4>
+            </div>
+
+            <div id="collapse3" class="panel-collapse collapse">
+                <div class="panel-body">
+<?php 
+                        if(count($negativeNewsNB) == 0){
+                                echo $emptyMessage;
+                        }else{
+                                echo '<ul class="list-group">';
+                                foreach($negativeNewsNB as $negnews_nb){
+
+                                        echo '<li class="list-group-item list-group-item-danger">';
+                                        echo $negnews_nb;
+                                        echo '</li>';
+
+                                }
+                                echo '</ul>';
+                        }
+
+?>
+                </div>
+            </div>
+
+          </div>
+        </div>
+
+        <h3> Neural Network </h3>
+
+        <br>
+
+        <!-- Neural Network Results -->
+
+        <div class="panel-group">
+          <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse4">Positive News</a>
+                </h4>
+            </div>
+
+            <div id="collapse4" class="panel-collapse collapse">
+                <div class="panel-body">
+<?php 
+                        if(count($positiveNewsNN) == 0){
+                                echo $emptyMessage;
+                        }else{
+                                echo '<ul class="list-group">';
+                                foreach($positiveNewsNN as $posnews_nn){
+
+                                        echo '<li class="list-group-item list-group-item-success">';
+                                        echo $posnews_nn;
+                                        echo '</li>';
+
+                                }
+                                echo '</ul>';
+                        }
+
+?>
+                </div>
+            </div>
+
+
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#collapse5">Neutral News</a>
+                </h4>
+            </div>
+
+            <div id="collapse5" class="panel-collapse collapse">
+                <div class="panel-body">
+
+<?php 
+                        if(count($neutralNewsNN) == 0){
+                                echo $emptyMessage;
+                        }else{
+                                echo '<ul class="list-group">';
+                                foreach($neutralNewsNN as $neunews_nn){
+
+                                        echo '<li class="list-group-item list-group-item-info">';
+                                        echo $neunews_nn;
                                         echo '</li>';
 
                                 }
@@ -256,21 +392,21 @@
 
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapse3">Negative News</a>
+                    <a data-toggle="collapse" href="#collapse6">Negative News</a>
                 </h4>
             </div>
 
-            <div id="collapse3" class="panel-collapse collapse">
+            <div id="collapse6" class="panel-collapse collapse">
                 <div class="panel-body">
 <?php 
-                        if(count($negativeNews) == 0){
+                        if(count($negativeNewsNN) == 0){
                                 echo $emptyMessage;
                         }else{
                                 echo '<ul class="list-group">';
-                                foreach($negativeNews as $negnews){
+                                foreach($negativeNewsNN as $negnews_nn){
 
                                         echo '<li class="list-group-item list-group-item-danger">';
-                                        echo $negnews;
+                                        echo $negnews_nn;
                                         echo '</li>';
 
                                 }
@@ -285,14 +421,38 @@
           </div>
         </div>
 
-
 <?php
                 if(!empty($testTitle)){
 
-                        echo "<br>";
-                        echo $testTitle." = ".$titleResult; 
-                        echo "<br>";
+?>
 
+                        <div class="row">
+
+                            <div class="aladdin-single-result col-sm-12 col-md-8 col-md-offset-2">
+                                    <p>
+                                            "<?php echo $testTitle; ?>"
+                                    </p>
+
+                                    <div class="col-sm-6 col-md-6">
+
+                                        <h4> <u>Naive Bayes</u> </h4>
+
+                                        <h2><?php echo $titleResultNB; ?></h2>
+
+                                    </div>
+
+                                    <div class="col-sm-6 col-md-6">
+
+                                        <h4><u>Neural Network</u></h4>
+
+                                        <h2><?php echo $titleResultNN; ?></h2>
+
+                                    </div>
+
+                            </div>
+                        </div>
+
+<?php
                 }
 ?>
         </div>

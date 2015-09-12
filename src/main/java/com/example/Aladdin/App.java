@@ -68,7 +68,7 @@ public class App
             
                 //Naive Bayes
 
-       System.out.println("<<--- Result From Naive Bayes -->>");
+            //System.out.println("<<--- Result From Naive Bayes -->>");
 
                 DataSet singleTitle  = new DataSet(sentenceProcessing.sentenceProcessor(testTitle));
                 resultNaiveBayes = naiveBayes.getOutput(singleTitle);
@@ -77,12 +77,12 @@ public class App
 
             //Neural Network
 
-            System.out.println("<<--- Result From Neural Network -->>");
+            //System.out.println("<<--- Result From Neural Network -->>");
 
-            resultNeuralNetwork = neuralNetwork.getResult(sentenceProcessing.sentenceProcessor(testTitle));
-            System.out.println(resultNeuralNetwork);
+                resultNeuralNetwork = neuralNetwork.getResult(sentenceProcessing.sentenceProcessor(testTitle));
+                System.out.println(resultNeuralNetwork);
 
-              }
+            }
              
             else if(option.equals("-t")){
 
@@ -145,7 +145,9 @@ public class App
                  File file = new File("../../src/resources/Twitter.txt");
                  file.delete();
   
-            System.out.println("<<--- Result From Naive Bayes -->>");
+            System.out.println("<source>");
+            System.out.println("naive");
+            System.out.println("</source>");
                  
                  System.out.println("<positive>");
 
@@ -169,7 +171,9 @@ public class App
                  System.out.println("</negative>");
           
                  
-            System.out.println("<<--- Result From Neural Network -->>");
+            System.out.println("<source>");
+            System.out.println("neural");
+            System.out.println("</source>");
             
               System.out.println("<positive>");
 
