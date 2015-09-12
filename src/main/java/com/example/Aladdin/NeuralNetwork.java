@@ -173,30 +173,20 @@ public  String getResult(String testData)
 
     double [] finalResult = getOutput();
 
-
-
-    for(double temp : tests)
-            System.out.print(temp + "   ");
-
-
-
-    for(double temp : finalResult)
-            System.out.print(temp + "   ");
-
     if((finalResult[0] > finalResult[1]) && (finalResult[0]>finalResult[2]))
     {
-       return "positive";
+       return "Positive";
     }
 
     else if(finalResult[2] > finalResult[1])
     {
-        return "negative";
+        return "Negative";
     }
 
     else
     {
 
-         return "neutral";
+         return "Neutral";
     }
 
 }
