@@ -31,45 +31,57 @@ public class App
           NaiveBayes naiveBayes= new NaiveBayes();
           SentenceProcessing sentenceProcessing = new SentenceProcessing();
           TwitterExtract extract = new TwitterExtract();
-
+//          NeuralNetwork neuralNetwork = new NeuralNetwork();
+          
           ArrayList<String> positiveList = new ArrayList<String>();
           ArrayList<String> neutralList = new ArrayList<String>();
           ArrayList<String> negativeList = new ArrayList<String>();
    
           extract.getDate();
           String result;
-
+     /*     
           if(args.length != 2){
 
                   System.out.println("Invalid number of arguments");
                   System.exit(0);
 
           }
+*/ 
 
-          
           /* Feature/web-interface *
            * Accept keywords from command line arguments instead of stdin
           System.out.println("Enter Tag");
           Scanner scanner = new Scanner(System.in);
           */
-
+ /*         
           String option = args[0];
 
-          if(option.equals("-s")){
+         if(option.equals("-s")){
 
-                  String testTitle = args[1];
+                String testTitle = args[1];
+
+       //           String testTitle = "250 were save";
 
                   testTitle += '\n';
-
+            
+                //Naive Bayes
+ 
                 DataSet singleTitle  = new DataSet(sentenceProcessing.sentenceProcessor(testTitle));
                 result = naiveBayes.getOutput(singleTitle);
-                System.out.println(result);
-          
+               System.out.println(result);
+    
+            //Neural Network
+  //          result = neuralNetwork.getResult(sentenceProcessing.sentenceProcessor(testTitle));
+   //         System.out.println(result);
+
               }
              else if(option.equals("-t")){
 
 
+                
                 String tag = args[1];
+  */              
+                String tag = "dead";
 
                 extract.extractStatus(tag);
 
@@ -92,7 +104,7 @@ public class App
                      DataSet testDataSet = new DataSet(sentenceProcessing.sentenceProcessor(val));
                      
                      result = naiveBayes.getOutput(testDataSet);
-
+   
                      if(result.equals("Positive"))
                      {
                        positiveList.add(val);
@@ -131,17 +143,12 @@ public class App
                      System.out.print(temp);
 
                  System.out.println("</negative>");
-          }else{
+   /*      }
+        
+         else{
 
                   System.out.println("Invalid option: Use -s or -t ");
-
           }
-
-    
-   //         NeuralNetwork neuralNetwork = new NeuralNetwork();
-   //         String result = neuralNetwork.getResult(sentenceProcessing.sentenceProcessor("Turkey hit by series of attacks\n"));
-
-   //         System.out.println(result);
-
+    */    
     }
 }

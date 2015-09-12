@@ -69,9 +69,9 @@ class NeuralNetwork
 
           int maxRuns = 50000;
 
-          double minErrorCondition = 0.001;
+           double minErrorCondition = 0.001;
       
-           //run(maxRuns, minErrorCondition);
+      //    run(maxRuns, minErrorCondition);
 
       }
 
@@ -173,17 +173,26 @@ public  String getResult(String testData)
 
     double [] finalResult = getOutput();
 
-    double a,b,c;
 
-    if((finalResult[0] > finalResult[1]) && (finalResult[0] > finalResult[2]))
+
+    for(double temp : tests)
+            System.out.print(temp + "   ");
+
+
+
+    for(double temp : finalResult)
+            System.out.print(temp + "   ");
+
+    if((finalResult[0] > finalResult[1]) && (finalResult[0]>finalResult[2]))
     {
        return "positive";
     }
 
-    else if((finalResult[2] > finalResult[0]) && (finalResult[2] > finalResult[1]))
+    else if(finalResult[2] > finalResult[1])
     {
         return "negative";
     }
+
     else
     {
 
@@ -225,7 +234,6 @@ private void run(int maxSteps, double minError) {
   
                 applyBackpropagation(expectedOutputs.get(p));
         }
-         
                  
                    System.out.println( error + " " +i);
 
