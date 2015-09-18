@@ -146,10 +146,9 @@
                 }
 
                 /*
-                $keyword = "Nepal";
+                $keyword = "";
                 $positiveNews = [];
                 $positiveNews[0] = "Nepal is free";
-                $positiveNews[1] = "Kathmandu is free";
 
                 $neutralNews = [];
                 $neutralNews[0] = "Nepal is free";
