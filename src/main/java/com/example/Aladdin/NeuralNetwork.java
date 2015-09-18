@@ -30,9 +30,9 @@ class NeuralNetwork
       SentenceProcessing sentenceProcessing = new SentenceProcessing();
       
       //read file
-      String positiveData = sentenceProcessing.sentenceProcessor(readFile.readFile("PositiveNews.txt"));
-      String negativeData = sentenceProcessing.sentenceProcessor(readFile.readFile("NegativeNews.txt"));
-      String neutralData = sentenceProcessing.sentenceProcessor(readFile.readFile("NeutralNews.txt"));
+      String positiveData = sentenceProcessing.sentenceProcessor(readFile.readFile("PositiveNewsNN.txt"));
+      String negativeData = sentenceProcessing.sentenceProcessor(readFile.readFile("NegativeNewsNN.txt"));
+      String neutralData = sentenceProcessing.sentenceProcessor(readFile.readFile("NeutralNewsNN.txt"));
       
     //   String testData = sentenceProcessing.sentenceProcessor("3 police was killed by Maoist\n");
 
@@ -61,9 +61,9 @@ class NeuralNetwork
         
 //         featureVectors(testData);
       
-           takeValues(positiveData,new double[]{1,0,0});
-           takeValues(neutralData, new double[]{0,1,0});
-           takeValues(negativeData,new double[]{0,0,1});
+           //takeValues(positiveData,new double[]{1,0,0});
+           //takeValues(neutralData, new double[]{0,1,0});
+           //takeValues(negativeData,new double[]{0,0,1});
 
           NeuralNetwork(90, 90, 3);
 
